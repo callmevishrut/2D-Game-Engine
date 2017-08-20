@@ -60,4 +60,8 @@ public class Window {
 		return canvas;
 	}
 
+	public JFrame getFrame() {
+		return frame;
+	}
+
 }

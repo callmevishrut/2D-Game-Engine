@@ -1,9 +1,15 @@
 package com.minor.engine;
 
+import com.minor.engine.gfx.Image;
+import com.sun.glass.events.KeyEvent;
+
 public class GameContainer implements Runnable 
 {
 	private Thread thread;
 	
+	private Input input;
+	private AbstractGame game;
+	private Image image;
 	
 	private Window window;
 	private Renderer renderer;
@@ -16,13 +22,15 @@ public class GameContainer implements Runnable
 	private float scale = 4f;
 	private String title = "Minor_Engine v0.1";
 
-	public GameContainer(){
-		
+	public GameContainer(AbstractGame game){
+		this.game = game;		
 	}
 	public void start() {
 		//making our window 
 		window = new Window(this); // make window on this thread
 		renderer = new Renderer(this);
+		input = new Input(this);
+		image = new Image("/text.png");
 		
 		
 		thread = new Thread(this);
@@ -66,6 +74,9 @@ public class GameContainer implements Runnable
 		    	
 		    	//TODO: Update game
 		    	
+		    	game.update(this, (float)UPDATE_CAP);
+		    	input.update();
+		    	
 		    	if(frameTime >= 1.0)
 		    	{
 		    		frameTime = 0;
@@ -78,6 +89,8 @@ public class GameContainer implements Runnable
 		    	
 		    	renderer.clear();
 		    	//TODO: Render Game here
+		    	
+		    	game.render(this, renderer);
 		    	window.update();
 		    	
 		    	
@@ -104,11 +117,7 @@ public class GameContainer implements Runnable
 	private void dispose() {
 		
 	}
-	public static void main(String args[])
-	{
-		GameContainer gc = new GameContainer();
-		gc.start();
-	}
+	
 	public int getWidth() {
 		return width;
 	}
@@ -135,5 +144,8 @@ public class GameContainer implements Runnable
 	}
 	public Window getWindow() {
 		return window;
+	}
+	public Input getInput() {
+		return input;
 	}
 }
