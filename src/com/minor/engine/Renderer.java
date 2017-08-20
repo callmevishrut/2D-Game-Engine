@@ -3,6 +3,7 @@ package com.minor.engine;
 import java.awt.image.DataBufferInt;
 
 import com.minor.engine.gfx.Image;
+import com.minor.engine.gfx.ImageTile;
 
 public class Renderer 
 {
@@ -42,14 +43,80 @@ public class Renderer
 	
 	public void drawImage(Image image, int offX, int offY)
 	{
-		for(int y = 0; y <image.getH(); y++)
+		
+		//DONT RENDER UNNECESSARY PIXELS
+		if(offX < -image.getW()) return; //if the image is completely off screen don't not render it
+		if(offY < image.getH()) return;
+		if(offX >= pW) return;
+		if(offY >= pH) return;
+		
+		
+		//not render any pixels which are not on the screen
+		int newX = 0;
+		int newY = 0;
+		int newWidth = image.getW();
+		int newHeight = image.getH();
+		
+	
+		//CLIP OFFSCREEN PIXELS
+		if( offX < 0 ) // if the image is going off screen
+			newX -= offX;
+		
+		if( offY < 0 ) // if the image is going off screen
+			newY -= offY;
+		if(newWidth +  offX >= pW) newWidth = newWidth - (newWidth + offX - pW);
+			//System.out.println(newWidth);
+		if(newHeight +  offY >= pH)newHeight = newHeight - (newHeight + offY - pH);
+			//System.out.println(newHeight);
+
+		//Actually drawing pixels
+		
+		for(int y = newY; y < newHeight; y++)
 		{
-			for(int x = 0; x <image.getW();x++)
+			for(int x = newX; x < newWidth;x++)
 			{
 				setPixel(x + offX, y + offY, image.getP()[x + y *image.getW()]);
 			}
 		}
 	}
 	
+	
+	public void drawImageTile(ImageTile image, int offX, int offY, int tileX, int tileY)
+	{
+		//DONT RENDER UNNECESSARY PIXELS
+			if(offX < -image.getTileW()) return; //if the image is completely off screen don't not render it
+			if(offY < image.getTileH()) return;
+			if(offX >= pW) return;
+			if(offY >= pH) return;
+			
+			
+			//not render any pixels which are not on the screen
+			int newX = 0;
+			int newY = 0;
+			int newWidth = image.getTileW();
+			int newHeight = image.getTileH();
+			
+		
+			//CLIP OFFSCREEN PIXELS
+			if( offX < 0 ) // if the image is going off screen
+				newX -= offX;
+			
+			if( offY < 0 ) // if the image is going off screen
+				newY -= offY;
+			if(newWidth +  offX >= pW) newWidth = newWidth - (newWidth + offX - pW);
+				//System.out.println(newWidth);
+			if(newHeight +  offY >= pH)newHeight = newHeight - (newHeight + offY - pH);
+				//System.out.println(newHeight);
+	
+			//Actually drawing pixels
+			
+			for(int y = newY; y < newHeight; y++)
+			{
+				for(int x = newX; x < newWidth;x++)
+				{
+					setPixel(x + offX, y + offY, image.getP()[(x + tileX * image.getTileW()) + (y + tileY * image.getTileH()) * image.getW()]);
+				}
+			}
+		}
 	
 }

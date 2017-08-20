@@ -1,7 +1,5 @@
 package com.minor.engine;
 
-import com.minor.engine.gfx.Image;
-import com.sun.glass.events.KeyEvent;
 
 public class GameContainer implements Runnable 
 {
@@ -9,7 +7,6 @@ public class GameContainer implements Runnable
 	
 	private Input input;
 	private AbstractGame game;
-	private Image image;
 	
 	private Window window;
 	private Renderer renderer;
@@ -30,7 +27,6 @@ public class GameContainer implements Runnable
 		window = new Window(this); // make window on this thread
 		renderer = new Renderer(this);
 		input = new Input(this);
-		image = new Image("/text.png");
 		
 		
 		thread = new Thread(this);
