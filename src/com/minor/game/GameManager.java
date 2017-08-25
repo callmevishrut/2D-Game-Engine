@@ -5,19 +5,23 @@ import java.awt.event.KeyEvent;
 import com.minor.engine.AbstractGame;
 import com.minor.engine.GameContainer;
 import com.minor.engine.Renderer;
+import com.minor.engine.audio.SoundClip;
 import com.minor.engine.gfx.Image;
-import com.minor.engine.gfx.ImageTile;
+//import com.minor.engine.gfx.ImageTile;
 
 public class GameManager extends AbstractGame
 {
 	private Image image;
 	//private ImageTile imageTile;
+	private SoundClip clip;
+	
 
 
 	public GameManager()
 	{
 		image = new Image("/text.png");
 		//imageTile = new ImageTile("/Anim_test.png", 16, 16);
+		clip = new SoundClip("/Sounds/test.wav");
 
 	}
 	
@@ -26,15 +30,28 @@ public class GameManager extends AbstractGame
 	{
 		if(gc.getInput().isKeyDown(KeyEvent.VK_A))
 		{
-			System.out.println("A was pressed down");
+			//System.out.println("A was pressed down");
+			clip.play();
+			
 		}
+		if(gc.getInput().isKeyDown(KeyEvent.VK_S))
+		{
+			//System.out.println("A was pressed down");
+			clip.stop();
+			
+		}
+		//we can take a temp variable and add the delta time * speed to it 
+		// we can loop the temp to the index to where we want the image to draw
 	}
 
 	@Override
 	public void render(GameContainer gc, Renderer r) 
 	{
 		r.drawImage(image, gc.getInput().getMouseX(), gc.getInput().getMouseY());
+    	r.drawText("FPS:" + gc.getFPS(), 0, 0, 0xff00ffff);
+
 		//r.drawImageTile with anim
+		//r.drawImageTile(image, offx, offY, tileX, tileY); // tile x , tile y give the index of the grid displayed right now
 		
 	}
 	public static void main(String args[])

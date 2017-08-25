@@ -2,6 +2,7 @@ package com.minor.engine;
 
 import java.awt.image.DataBufferInt;
 
+import com.minor.engine.gfx.Font;
 import com.minor.engine.gfx.Image;
 import com.minor.engine.gfx.ImageTile;
 
@@ -11,6 +12,7 @@ public class Renderer
 	private int pW, pH; // pixel width and pixel height
 	private int[] p; // array of all the pixels
 	
+	private Font font = Font.STANDARD;
 	
 	public Renderer(GameContainer gc)
 	{
@@ -46,7 +48,7 @@ public class Renderer
 		
 		//DONT RENDER UNNECESSARY PIXELS
 		if(offX < -image.getW()) return; //if the image is completely off screen don't not render it
-		if(offY < image.getH()) return;
+		if(offY < -image.getH()) return;
 		if(offX >= pW) return;
 		if(offY >= pH) return;
 		
@@ -80,12 +82,36 @@ public class Renderer
 		}
 	}
 	
+	public void drawText(String text, int offX, int offY, int color)
+	{
+		//since we dont ahve lowercase we will change every text to upper case
+		text = text.toUpperCase();
+		int offset = 0;
+		
+		for(int i = 0; i < text.length(); i++) 
+		{
+			int unicode = text.codePointAt(i) - 32; // make space 0 
+						
+			for ( int y = 0; y < font.getFontImage().getH(); y++)
+			{
+				for(int x = 0; x < font.getWidths()[unicode]; x++)
+				{
+					if (font.getFontImage().getP()[(x + font.getOffsets()[unicode])+ y* font.getFontImage().getW()] == 0xffffffff)
+					{
+						setPixel(x + offX + offset,y + offY,color);
+					}
+				}
+			}
+			
+			offset += font.getWidths()[unicode];
+		}
+	}
 	
 	public void drawImageTile(ImageTile image, int offX, int offY, int tileX, int tileY)
 	{
 		//DONT RENDER UNNECESSARY PIXELS
 			if(offX < -image.getTileW()) return; //if the image is completely off screen don't not render it
-			if(offY < image.getTileH()) return;
+			if(offY < -image.getTileH()) return;
 			if(offX >= pW) return;
 			if(offY >= pH) return;
 			

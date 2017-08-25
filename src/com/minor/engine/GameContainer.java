@@ -35,6 +35,10 @@ public class GameContainer implements Runnable
 	public void stop() {
 		
 	}
+	int fps = 0;
+	public int getFPS(){
+		return fps;
+	}
 	public void run() {
 		
 		running = true;
@@ -49,7 +53,7 @@ public class GameContainer implements Runnable
 		
 		double frameTime = 0;
 		int frames = 0;
-		int fps = 0;
+		
 		
 		while(running)
 		{
@@ -78,15 +82,14 @@ public class GameContainer implements Runnable
 		    		frameTime = 0;
 		    		fps = frames;
 		    		frames = 0;
-		    		System.out.println("FPS : " + fps);
 		    	}
 		    }
 		    if(render) {
 		    	
 		    	renderer.clear();
-		    	//TODO: Render Game here
-		    	
+		    	//TODO: Render Game here		    	
 		    	game.render(this, renderer);
+		    	//renderer.drawText("FPS: "+ fps, 0, 0, 0xff00ffff);
 		    	window.update();
 		    	
 		    	
