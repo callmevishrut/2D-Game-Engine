@@ -87,6 +87,8 @@ public class GameContainer implements Runnable
 		    if(render) {
 		    	
 		    	renderer.clear();
+		    	renderer.process();
+		    	
 		    	//TODO: Render Game here		    	
 		    	game.render(this, renderer);
 		    	//renderer.drawText("FPS: "+ fps, 0, 0, 0xff00ffff);
