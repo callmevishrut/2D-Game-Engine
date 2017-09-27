@@ -89,11 +89,11 @@ public class Renderer
 		if(x < 0 || x >= pW || y < 0 | y >= pH || alpha == 0 )
 		{
 			
-			//0xffff00ff is gonna be our alpha i.e dont render this color
+			//0xffff00ff is not gonna be our alpha i.e dont render this color
 			//modified :: 
 			return;
 		}
-		int index = x+ y * pW;
+		int index = x + y * pW;
 		if( zb[index] > zDepth)
 			return;
 		zb[index] = zDepth;
@@ -101,12 +101,12 @@ public class Renderer
 			p[index] = value;
 		else
 		{
-			int color = 0; //color for blending the alpha channels
-			int pixelColor = p[x+y*pW];
+			//int color = 0; //color for blending the alpha channels
+			int pixelColor = p[index];
 			int newRed = ((pixelColor >> 16) & 0xff) - (int)((((pixelColor >> 16)& 0xff) - ((value >> 16) &0xff)) *(alpha / 255f)) ;
 			int newGreen = ((pixelColor >> 8) & 0xff) -(int)((((pixelColor >> 8)& 0xff) - ((value >> 8) &0xff)) *(alpha / 255f)) ;
 			int newBlue = (pixelColor & 0xff) - (int)((((pixelColor)& 0xff) - ((value) &0xff)) *(alpha / 255f)) ;
-			p[index] =(255 << 24 | newRed << 16 | newGreen << 8 | newBlue);
+			p[index] = (255 << 24 | newRed << 16 | newGreen << 8 | newBlue);
 		}
 	}
 	
@@ -264,9 +264,9 @@ public class Renderer
 		if(newWidth +  offX >= pW) newWidth = newWidth - (newWidth + offX - pW);
 			
 		if(newHeight +  offY >= pH)newHeight = newHeight - (newHeight + offY - pH);
-		for(int y = 0; y<= newHeight;y++)
+		for(int y = newY; y<= newHeight;y++)
 		{
-			for(int x = 0; x<= newWidth;x++)
+			for(int x = newX; x<= newWidth;x++)
 			{
 				setPixel(x + offX,y + offY,color);
 			}

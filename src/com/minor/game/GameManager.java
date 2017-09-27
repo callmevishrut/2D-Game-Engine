@@ -1,6 +1,7 @@
 package com.minor.game;
 
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
 
 import com.minor.engine.AbstractGame;
 import com.minor.engine.GameContainer;
@@ -47,15 +48,16 @@ public class GameManager extends AbstractGame
 	@Override
 	public void render(GameContainer gc, Renderer r) 
 	{
-		//r.drawImage(image, gc.getInput().getMouseX(), gc.getInput().getMouseY());
+		
 		r.setzDepth(0);
     	r.drawText("FPS:" + gc.getFPS(), 0, 0, 0xff00ffff);
     	r.setzDepth(1000);
-    	//r.drawRect(10,10,32,32,0xffffccff); draw a rectangle
+    	//r.drawRect(10,10,32,32,0xffffccff); //draw a rectangle
     	r.drawFillRect(gc.getInput().getMouseX()-16, gc.getInput().getMouseY()-16,32,32,0xffffffff);
     	
     	
-    	
+    	r.setzDepth(100);
+    	r.drawImage(image, gc.getInput().getMouseX(), gc.getInput().getMouseY());
 		//r.drawImageTile with anim
 		//r.drawImageTile(image, offx, offY, tileX, tileY); // tile x , tile y give the index of the grid displayed right now
 		

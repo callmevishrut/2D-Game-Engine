@@ -26,7 +26,7 @@ public class Font {
 		widths = new int[59];
 		int unicode = 0;
 		
-		for(int i = 0; i <fontImage.getW();i++)
+		for(int i = 0; i < fontImage.getW();i++)
 		{
 			if(fontImage.getP()[i] == 0xff0000ff)
 			{
