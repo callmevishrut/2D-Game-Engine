@@ -1,14 +1,14 @@
 package com.minor.game;
 
 import java.awt.event.KeyEvent;
-import java.awt.event.MouseEvent;
-
 import com.minor.engine.AbstractGame;
 import com.minor.engine.GameContainer;
 import com.minor.engine.Renderer;
 import com.minor.engine.audio.SoundClip;
 import com.minor.engine.gfx.Image;
+import com.minor.engine.gfx.Light;
 //import com.minor.engine.gfx.ImageTile;
+
 
 public class GameManager extends AbstractGame
 {
@@ -16,14 +16,14 @@ public class GameManager extends AbstractGame
 	//private ImageTile imageTile;
 	private SoundClip clip;
 	
-
+	private Light light;
 
 	public GameManager()
 	{
 		image = new Image("/text.png");
 		//imageTile = new ImageTile("/Anim_test.png", 16, 16);
 		clip = new SoundClip("/Sounds/test.wav");
-
+		light = new Light(50,0xff00ffff);
 	}
 	
 	@Override
@@ -51,19 +51,28 @@ public class GameManager extends AbstractGame
 		
 		r.setzDepth(0);
     	r.drawText("FPS:" + gc.getFPS(), 0, 0, 0xff00ffff);
-    	r.setzDepth(1000);
+    	//r.setzDepth(1000);
     	//r.drawRect(10,10,32,32,0xffffccff); //draw a rectangle
-    	r.drawFillRect(gc.getInput().getMouseX()-16, gc.getInput().getMouseY()-16,32,32,0xffffffff);
+    	//r.drawFillRect(gc.getInput().getMouseX()-16, gc.getInput().getMouseY()-16,32,32,0xffffffff);
     	
     	
     	r.setzDepth(100);
-    	r.drawImage(image, gc.getInput().getMouseX(), gc.getInput().getMouseY());
+    	//r.drawImage(image, gc.getInput().getMouseX(), gc.getInput().getMouseY());
 		//r.drawImageTile with anim
 		//r.drawImageTile(image, offx, offY, tileX, tileY); // tile x , tile y give the index of the grid displayed right now
 		
+    	for( int x = 0 ; x < light.getDiameter();x++)
+    	{
+    		for( int y = 0 ; y < light.getDiameter();y++)
+        	{
+        		r.setLightMap(x,y,light.getLm()[x + y *light.getDiameter()]);
+        	}
+    	}
+    	
 	}
 	public static void main(String args[])
 	{
+		//System.out.println("Start\n");		
 		GameContainer gc = new GameContainer(new GameManager());
 		gc.start();
 		

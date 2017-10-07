@@ -20,11 +20,16 @@ public class Renderer
 	
 	private int[] zb; // for zx buffer
 	
+	// we need the lightening color to block light 
+	private int[] lm;
+	private int[] lb;
+	
+	
 	private int zDepth = 0;
 
 	private boolean processing = false;
 	
-	
+	private int aColor = 0xff6b6b6b;
 	
 	
 	public Renderer(GameContainer gc)
@@ -36,6 +41,8 @@ public class Renderer
 		// p is given pixel data access , if we change p it change the pixels on the screen
 		
 		zb = new int[p.length];
+		lm = new int[p.length];
+		lb = new int[p.length];
 		
 	}
 	
@@ -45,6 +52,8 @@ public class Renderer
 		{
 			p[i] = 0;
 			zb[i] = 0;
+			lm[i] = aColor;
+			lb[i] = 0;
 		}
 	}
 	public void process()
@@ -52,12 +61,13 @@ public class Renderer
 		processing = true;
 		//we need to sort the imageRequest array by the z depth as , it is neccessary or the compiler
 		//to know which image is to be drawn first and in order
-		Collections.sort(imageRequest, new Comparator<ImageRequest>(){
+		Collections.sort(imageRequest, new Comparator<ImageRequest>()
+		{
 
 			@Override
-			public int compare(ImageRequest i0, ImageRequest i1) {
-				// TODO Auto-generated method stub
-				
+			public int compare(ImageRequest i0, ImageRequest i1) 
+			{
+			
 				if(i0.zDepth < i1.zDepth)
 					return -1;
 				if(i0.zDepth > i1.zDepth)
@@ -66,10 +76,7 @@ public class Renderer
 				return 0;
 			}
 			
-		}
-				
-				
-				);
+		});
 				
 		for(ImageRequest ir : imageRequest)
 		{
@@ -77,9 +84,40 @@ public class Renderer
 			
 			drawImage(ir.image,ir.offX,ir.offY);
 		}
-		processing = false;
+		
+		for(int i =0 ; i< p.length;i++)
+		{
+		
+			float r = ((lm[i]>>16) & 0xff)/255f;
+			float g = ((lm[i]>>8) & 0xff)/255f;
+			float b = (lm[i] & 0xff)/255f;
+			
+			p[i] = ((int)((( p[i] >> 16 ) & 0xff) *r) << 16 | (int)((( p[i] >> 8 ) & 0xff) *g) << 8 | (int)(( p[i] & 0xff) *b));
+		}
+				
+		
 		imageRequest.clear();
+		processing = false;
 	}
+	
+	public void setLightMap(int x , int y , int value)
+	{
+		if(x < 0 || x >= pW || y < 0|| y >= pH)
+		{
+			return;
+		}
+		
+		// we get the RGB and we calc the max value and make the new color ofthe pixle
+		int baseColor = lm[x + y *pW];
+		
+		int maxRed = Math.max(((baseColor >> 16) & 0xff), ((value >> 16) & 0xff));
+		int maxGreen = Math.max(((baseColor >> 8) & 0xff), ((value >> 8) & 0xff));
+		int maxBlue = Math.max((baseColor & 0xff), (value & 0xff)); 
+		
+		
+		lm[x + y * pW] = (maxRed << 16 | maxGreen << 8 | maxBlue);
+	}
+	
 	
 	
 	public void setPixel(int x, int y , int value)
@@ -106,7 +144,7 @@ public class Renderer
 			int newRed = ((pixelColor >> 16) & 0xff) - (int)((((pixelColor >> 16)& 0xff) - ((value >> 16) &0xff)) *(alpha / 255f)) ;
 			int newGreen = ((pixelColor >> 8) & 0xff) -(int)((((pixelColor >> 8)& 0xff) - ((value >> 8) &0xff)) *(alpha / 255f)) ;
 			int newBlue = (pixelColor & 0xff) - (int)((((pixelColor)& 0xff) - ((value) &0xff)) *(alpha / 255f)) ;
-			p[index] = (255 << 24 | newRed << 16 | newGreen << 8 | newBlue);
+			p[index] = (newRed << 16 | newGreen << 8 | newBlue);
 		}
 	}
 	
