@@ -54,6 +54,7 @@ public class GameContainer implements Runnable
 		double frameTime = 0;
 		int frames = 0;
 		
+		game.init(this);
 		
 		while(running)
 		{
@@ -69,11 +70,7 @@ public class GameContainer implements Runnable
 		    {
 		    	unprocessedTime -= UPDATE_CAP;
 		    	render = true;
-		    	
-		    	//System.out.println("UPDATE");
-		    	
-		    	//TODO: Update game
-		    	
+		        	
 		    	game.update(this, (float)UPDATE_CAP);
 		    	input.update();
 		    	
@@ -88,12 +85,12 @@ public class GameContainer implements Runnable
 		    	
 		    	renderer.clear();
 		    	renderer.process();
-		    	
-		    	//TODO: Render Game here		    	
+		    			    			    	
 		    	game.render(this, renderer);
-		    	//renderer.drawText("FPS: "+ fps, 0, 0, 0xff00ffff);
-		    	window.update();
-		    	
+		    	renderer.setCamX(0);
+		    	renderer.setCamY(0);
+		    	renderer.drawText("FPS: "+ fps, 0, 0, 0xffffffff);
+		    	window.update();		    	
 		    	
 		    	frames++; // next frame
 		    	
@@ -112,7 +109,6 @@ public class GameContainer implements Runnable
 		    }
 		}
 		
-		//dispose() here 
 		dispose();
 	}
 	private void dispose() {
@@ -148,5 +144,11 @@ public class GameContainer implements Runnable
 	}
 	public Input getInput() {
 		return input;
+	}
+	public Renderer getRenderer() {
+		return renderer;
+	}
+	public void setRenderer(Renderer renderer) {
+		this.renderer = renderer;
 	}
 }

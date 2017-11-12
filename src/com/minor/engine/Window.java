@@ -9,9 +9,8 @@ import java.awt.image.BufferedImage;
 
 import javax.swing.JFrame;
 
-public class Window {
-	
-	
+public class Window 
+{
 	private JFrame frame;
 	private BufferedImage image;
 	private Canvas canvas;
@@ -35,7 +34,7 @@ public class Window {
 		frame.add(canvas, BorderLayout.CENTER);
 		frame.pack(); //set the frame to the size of the canvas
 		frame.setLocationRelativeTo(null);
-		frame.setResizable(false);;
+		frame.setResizable(false);
 		frame.setVisible(true);
 		
 		canvas.createBufferStrategy(2); // to buffers
@@ -45,11 +44,8 @@ public class Window {
 	
 	public void update()
 	{
-		
 		graphics.drawImage(image, 0, 0, canvas.getWidth(), canvas.getHeight(),null);
-		bs.show(); // graphics were being drawn in the buffered strategy , we need to show it
-				
-		
+		bs.show(); // graphics were being drawn in the buffered strategy , we need to show it	
 	}
 
 	public BufferedImage getImage() {
