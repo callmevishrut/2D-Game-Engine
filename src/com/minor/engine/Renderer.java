@@ -246,12 +246,12 @@ public class Renderer
 	{
 		offX -= camX;
 		offY -= camY;
-		for(int y = 0; y<= width;y++)
+		for(int y = 0; y<= height;y++)
 		{
 			setPixel(offX, y+offY,color);
 			setPixel(offX+width, y+offY,color);
 		}
-		for(int x = 0; x<= height;x++)
+		for(int x = 0; x<= width;x++)
 		{
 			setPixel(x + offX,offY,color);
 			setPixel(x + offX,offY+height,color);

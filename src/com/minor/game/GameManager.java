@@ -6,6 +6,10 @@ import com.minor.engine.AbstractGame;
 import com.minor.engine.GameContainer;
 import com.minor.engine.Renderer;
 import com.minor.engine.gfx.Image;
+import com.minor.game.objects.GameObject;
+import com.minor.game.objects.Physics;
+import com.minor.game.objects.Platform;
+import com.minor.game.objects.Player;
 
 public class GameManager extends AbstractGame
 {
@@ -23,6 +27,9 @@ public class GameManager extends AbstractGame
 	public GameManager()
 	{
 		objects.add(new Player(4,2));
+		objects.add(new Platform(32 * TS, 7 * TS,0xffff0000,false));
+		objects.add(new Platform(26 * TS, 7 * TS,0xffff0000,false));
+		objects.add(new Platform(36 * TS, 10* TS,0xffff0000,true));
 		loadLevel("/Platformer Assets/level.png");
 		camera = new Camera("player");
 	}
@@ -44,6 +51,7 @@ public class GameManager extends AbstractGame
 				i--;
 			}
 		}
+		Physics.update();
 		camera.update(gc, this, dt);
 	}
 

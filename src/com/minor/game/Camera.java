@@ -2,6 +2,7 @@ package com.minor.game;
 
 import com.minor.engine.GameContainer;
 import com.minor.engine.Renderer;
+import com.minor.game.objects.GameObject;
 
 public class Camera 
 {
