@@ -1,7 +1,11 @@
 package com.minor.game;
 
 import java.util.ArrayList;
+import java.util.Scanner;
 
+import javax.swing.SwingUtilities;
+
+import com.minor.ai.View;
 import com.minor.engine.AbstractGame;
 import com.minor.engine.GameContainer;
 import com.minor.engine.Renderer;
@@ -10,6 +14,7 @@ import com.minor.game.objects.GameObject;
 import com.minor.game.objects.Physics;
 import com.minor.game.objects.Platform;
 import com.minor.game.objects.Player;
+import javax.swing.SwingUtilities;
 
 public class GameManager extends AbstractGame
 {
@@ -26,6 +31,7 @@ public class GameManager extends AbstractGame
 	
 	public GameManager()
 	{
+		//Scanner object to take the console input
 		objects.add(new Player(4,2));
 		objects.add(new Platform(32 * TS, 7 * TS,0xffff0000,false));
 		objects.add(new Platform(26 * TS, 7 * TS,0xffff0000,false));
@@ -131,12 +137,31 @@ public class GameManager extends AbstractGame
 	}
 	public static void main(String args[])
 	{
-				
-		GameContainer gc = new GameContainer(new GameManager());
-		gc.setWidth(320);
-		gc.setHeight(240);
-		gc.setScale(3f);
-		gc.start();
+		Scanner inp = new Scanner(System.in);
+		System.out.println("Please enter 1 for the game engine tech demo and 2 for the A.I. engine demo(dfs analysis)\n");
+		int state = inp.nextInt();
+		if(state == 1)
+		{
+			GameContainer gc = new GameContainer(new GameManager());
+			gc.setWidth(320);
+			gc.setHeight(240);
+			gc.setScale(3f);
+			gc.start();
+		}
+		else
+		{
+			  SwingUtilities.invokeLater(new Runnable() {
+
+		            public void run() {
+
+		                View view = new View();
+		                view.setVisible(true);
+
+		            }
+
+		        });
+		}
+		
 	
 	}
 	public int getLevelW() {
