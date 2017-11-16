@@ -2,8 +2,15 @@ package com.minor.ai;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
+
 import javax.swing.JFrame;
 public class View extends JFrame 
 {
@@ -15,32 +22,62 @@ public class View extends JFrame
 	            //  9 = target node
 
 	     	// borders are filled with "1" to show wall .
+		protected String cs;
+      protected int [][] maze =
+    	  {	
+    		  {1,1,1,1,1,1,1,1,1,1,1,1,1},
+              {1,0,1,0,1,0,1,0,0,0,0,0,1},
+              {1,0,1,0,0,0,1,0,1,1,1,0,1},
+              {1,0,0,0,1,1,1,0,0,0,0,0,1},
+              {1,0,1,0,0,0,0,0,1,1,1,0,1},
+              {1,1,1,0,1,1,1,0,1,0,0,0,1},
+              {1,0,1,0,1,0,0,0,1,1,1,0,1},
+              {1,0,1,0,1,1,1,0,1,0,1,0,1},
+              {1,9,0,0,0,0,0,0,0,0,1,0,1},
+              {1,1,1,1,1,1,1,1,1,1,1,1,1}
+    			  
+    			  
+		  };
+      protected int [][] maze1 = 
+    		  {
+    			  {1,1,1,1,1,1,1,1,1,1,1,1,1},
+    	          {1,0,1,0,0,0,1,0,0,0,1,9,1},
+    	          {1,0,1,0,1,0,1,0,1,0,1,0,1},
+    	          {1,0,1,0,1,0,1,0,1,0,1,0,1},
+    	          {1,0,1,0,1,0,1,0,1,0,1,0,1},
+    	          {1,0,1,0,1,0,1,0,1,0,1,0,1},
+    	          {1,0,1,0,1,0,1,0,1,0,1,0,1},
+    	          {1,0,1,0,1,0,1,0,1,0,1,0,1},
+    	          {1,0,0,0,1,0,0,0,1,0,0,0,1},
+    	          {1,1,1,1,1,1,1,1,1,1,1,1,1}
+    		  };
 
-      private int [][] maze = 
-
-	        { {1,1,1,1,1,1,1,1,1,1,1,1,1},
-	          {1,0,1,0,1,0,1,0,0,0,0,0,1},
-	          {1,0,1,0,0,0,1,0,1,1,1,0,1},
-	          {1,0,0,0,1,1,1,0,0,0,0,0,1},
-	          {1,0,1,0,0,0,0,0,1,1,1,0,1},
-	          {1,0,1,0,1,1,1,0,1,0,0,0,1},
-	          {1,0,1,0,1,0,0,0,1,1,1,0,1},
-	          {1,0,1,0,1,1,1,0,1,0,1,0,1},
-	          {1,0,0,0,0,0,0,0,0,0,1,9,1},
-	          {1,1,1,1,1,1,1,1,1,1,1,1,1}
-	 };
+	        
 
       private final List<Integer> path = new ArrayList<Integer>();
       private int pathIndex;
+      
       public View() 
       {
-
+    	  	Scanner in = new Scanner(System.in);
 	        setTitle("Simple Maze Solver");
 	        setSize(640, 480);
+	        
 	        setLocationRelativeTo(null);
 	        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-	        DFS.searchPath(maze, 1, 1, path);             // 1,1 is our starting position
+	        System.out.println("1 for Best case and 2 for worst case\n");
+	        int choice = in.nextInt();
+	        if(choice==1)
+	        {
+		        DFS.searchPath(maze, 1, 1, path);
+	        }
+	        else
+	        {
+		        DFS.searchPath(maze1, 1, 1, path);
+	        }
+	                     // 1,1 is our starting position
 	        pathIndex = path.size() - 2;
+	        in.close();
 
       }
       public void paint(Graphics g) 
